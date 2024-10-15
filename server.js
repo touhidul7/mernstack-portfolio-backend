@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // Secure CORS configuration - replace 'your-frontend-domain.com' with your actual domain
 const corsOptions = {
-  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Restrict to your frontend domaindd
+  origin: process.env.CLIENT_URL || 'http://localhost:3000', // Restrict to your frontend domain
   optionsSuccessStatus: 200
 };
 
