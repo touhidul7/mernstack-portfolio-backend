@@ -111,6 +111,9 @@ app.delete('/info/:id', async (req, res) => {
   }
 });
 // ====================== Info Routes END ====================== //
+app.get('/', (req, res) => {
+  res.send('Hello from Vercel!');
+});
 
 
 // =================== Server Setup =================== //
