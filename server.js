@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const mongoose = require('mongoose');
-const serverless = require('serverless-http');
 require('dotenv').config();
 
 // Secure CORS configuration - replace 'your-frontend-domain.com' with your actual domain
@@ -26,6 +25,7 @@ const infoSchema = new mongoose.Schema({
   Pinterest: String,
   Github: String,
   Linkedin: String,
+
   Skills: [String],
   projects: [
     {
@@ -37,6 +37,7 @@ const infoSchema = new mongoose.Schema({
       projectURL: String,
     }
   ],
+
   experience: [
     {
       range: String,
@@ -46,6 +47,8 @@ const infoSchema = new mongoose.Schema({
       description: String,
     }
   ],
+
+
 });
 
 // Indexes for better performance (optional, based on your use case)
@@ -70,6 +73,8 @@ app.get('/info', async (req, res) => {
     res.status(500).json({ message: "Error fetching info." });
   }
 });
+
+
 
 // POST: Add new info
 app.post('/info', async (req, res) => {
@@ -109,14 +114,14 @@ app.delete('/info/:id', async (req, res) => {
     res.status(500).json({ message: "Error deleting info." });
   }
 });
-
 // ====================== Info Routes END ====================== //
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
+app.get('/', (req, res) => {
+  res.send('Registered Domain...');
+});
 
-// Export the serverless handler
-module.exports.handler = serverless(app);
+
+// =================== Server Setup =================== //
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
