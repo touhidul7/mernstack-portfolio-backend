@@ -1,8 +1,9 @@
-const express = require('express'); 
-const cors = require('cors'); 
-const connectDB = require('./config/db'); 
-const mongoose = require('mongoose'); 
-require('dotenv').config(); 
+const express = require('express');
+const cors = require('cors');
+const connectDB = require('./config/db');
+const mongoose = require('mongoose');
+const serverless = require('serverless-http');
+require('dotenv').config();
 
 // Secure CORS configuration - replace 'your-frontend-domain.com' with your actual domain
 const corsOptions = {
@@ -16,6 +17,15 @@ const infoSchema = new mongoose.Schema({
   JobTitle: String,
   Description: String,
   phone: String,
+  Fiverr: String,
+  Facebook: String,
+  Twitter: String,
+  Instagram: String,
+  Medium: String,
+  Quora: String,
+  Pinterest: String,
+  Github: String,
+  Linkedin: String,
   Skills: [String],
   projects: [
     {
@@ -36,29 +46,18 @@ const infoSchema = new mongoose.Schema({
       description: String,
     }
   ],
-  Links: {
-    Fiverr: String,
-    Facebook: String,
-    Twitter: String,
-    Instagram: String,
-    Medium: String,
-    Quora: String,
-    Pinterest: String,
-    Github: String,
-    Linkedin: String,
-  }
 });
 
 // Indexes for better performance (optional, based on your use case)
 infoSchema.index({ name: 1 });
 
-const Info = mongoose.model('Info', infoSchema); 
+const Info = mongoose.model('Info', infoSchema);
 
-const app = express(); 
+const app = express();
 app.use(cors(corsOptions)); // Apply CORS configuration 
-app.use(express.json()); 
+app.use(express.json());
 
-connectDB(); 
+connectDB();
 
 // ====================== Info Routes ====================== //
 
@@ -110,14 +109,14 @@ app.delete('/info/:id', async (req, res) => {
     res.status(500).json({ message: "Error deleting info." });
   }
 });
+
 // ====================== Info Routes END ====================== //
-app.get('/', (req, res) => {
-  res.send('Hello from Vercel!');
-});
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
 
-
-// =================== Server Setup =================== //
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Export the serverless handler
+module.exports.handler = serverless(app);
