@@ -13,5 +13,5 @@ const connectDB = async () => {
     process.exit(1); // Exit process with failure
   }
 };
-
+/* MONGO_URI= mongodb+srv://touhidulislamshadhin77:uMKO8wp9EkYikLpJ@portfolio.fp7lt.mongodb.net/?retryWrites=true&w=majority&appName=portfolio */
 module.exports = connectDB;
